@@ -1,56 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Base/Stage2NormalGameModeBase.h"
-#include "Component/StatComponent.h"
-#include "Component/InventoryComponent.h"
-#include "../Player/Portal/Portal_Home.h"
-#include "MyGameInstance.h"
-#include "../Player/MyPlayer.h"
-#include "Base/Managers/UIManager.h"
-#include "../Monster/BossMonster.h"
-#include "../Monster/AI/AIController_BossMonster.h"
-#include "UI/Boss1Widget.h"
-#include "Kismet/GameplayStatics.h"
 
-AStage2NormalGameModeBase::AStage2NormalGameModeBase()
-{
-}
 
 void AStage2NormalGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	AMyPlayer *player = Cast<AMyPlayer>(UGameplayStatics::GetPlayerCharacter(this, 0));
-	if (player)
-	{
-		UMyGameInstance *GameInstance = Cast<UMyGameInstance>(GetGameInstance());
-		if (GameInstance)
-		{
-			GameInstance->InitializeManagers();
-			UStatComponent *StatComponent = player->FindComponentByClass<UStatComponent>();
-			if (StatComponent)
-			{
-				GameInstance->LoadPlayerStats(StatComponent);
-			}
-
-			UInventoryComponent *InvenComponent = player->FindComponentByClass<UInventoryComponent>();
-			if (InvenComponent)
-			{
-				GameInstance->LoadInventory(InvenComponent);
-			}
-			GameInstance->LoadPlayerSkeletal(player);
-
-			APlayerController *PlayerController = GetWorld()->GetFirstPlayerController();
-			if (PlayerController)
-			{
-				PlayerController->bShowMouseCursor = false;
-				PlayerController->SetInputMode(FInputModeGameOnly());
-			}
-		}
-	}
+	
+	SpawnMonster(FVector(-1350.f,856.0f,209.0f),10);
+	SpawnMonster(FVector(680.f,-1331.0f,1156.0f),10);
+	
 }
 
-void AStage2NormalGameModeBase::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
-}
