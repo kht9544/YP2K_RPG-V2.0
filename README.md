@@ -27,7 +27,7 @@
 ### Boss Monster 구현
 - **보스 등장 연출(Scene) 구현**
 - **Behavior Tree 설계 및 AI 패턴 적용**
-- **주변 사물과 상호작용을 이용한 기믹**-
+- **주변 사물과 상호작용을 이용한 기믹**
 
 ### Component 및 Manager 시스템 개발
 - **사운드 및 이펙트 관리** (Object Pooling 기법 활용)
