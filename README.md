@@ -3,7 +3,7 @@
 - 패키징파일 : https://drive.google.com/drive/folders/1R1YOr0E5lGBl__Li2Lf_HMDNkwYBS-YR?usp=sharing</br>
 
 ## 📝 개요
-본 프로젝트는 2달 동안 **TEAM_YP2K**에서 개발한 언리얼 엔진 기반 3D 액션 게임입니다. 🎮  
+본 프로젝트는 6주 동안 **TEAM_YP2K**에서 개발한 언리얼 엔진 기반 3D 액션 게임입니다. 🎮  
 4인 팀으로 진행한 프로젝트이며, 깃허브를 활용하여 협업을 진행했습니다. 주요 클래스 및 구조를 C++ 코드 기반으로 설명합니다.
 
 ## 🔥 맡은 역할
