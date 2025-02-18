@@ -46,19 +46,24 @@
 
 ## 🔍 클래스 구조도
 ```
-AActor
  ├── AMyEffectManager (이펙트 관리)
  ├── AMySoundManager (사운드 관리)
+ ├── AMyUIManager (UI 관리)
  ├── AMyCreature (ACharacter 상속)
  │   ├── AMyPlayer (플레이어)
- │   │   ├── AMyKnight (기사, 근접 공격)
- │   │   ├── AMyArcher (궁수, 원거리 공격)
  │   ├── AMyMonster (몬스터)
- │   │   ├── AMyBaseMonster (일반 몬스터)
+ │   │   ├── AMyNormalMonster (일반 몬스터)
+ │   │   ├── AMyEpicMonster (에픽 몬스터)
  │   │   ├── AMyBossMonster (보스 몬스터)
  ├── AGameModeBase (게임 진행 관리)
-     ├── AMyGameModeBase (일반 게임 모드 클래스)
-     ├── AMyBossGameModeBase (보스 게임 모드 클래스)
+ |   ├── AMyGameModeBase (일반 게임 모드 클래스)
+ │   │   ├── ANormalGameModeBase (사냥 스테이지 게임 모드)
+ │   │   |   ├── AStage1NormalGameModeBase (스테이지1)
+ │   │   |   ├── AStage2NormalGameModeBase (스테이지2)
+ │   │   ├── ABossGameModeBase(보스 스테이지 게임모드)
+ │   │   |   ├── AStage1BossGameModeBase (스테이지1)
+ │   │   |   ├── AStage2BossGameModeBase (스테이지2)
+ │   |   ├── AHomeGameModeBase (마을 스테이지 게임모드)
 
 ```
 ## ⚠️ 오류 상황과 해결 방안
