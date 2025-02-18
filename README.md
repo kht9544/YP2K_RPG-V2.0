@@ -19,7 +19,8 @@
 - **AnimInstance 제작** 및 캐릭터 애니메이션 연동
 - 팀원이 제작한 UI와 연동확인 및 수정
 
-### Stage 이동 구현
+### Stage 구현
+- Stage이동을 위한 **Portal** 구현
 - **Stage별 GameMode** 구현
 - **GameInstance를 통한 데이터 관리**
 
