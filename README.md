@@ -1,4 +1,4 @@
-# YPK_MainProject(수정중)</br>
+# YPK_RPG V2.0 </br>
 - 유튜브링크 : https://youtu.be/NWj8hIFVd30</br>
 - 패키징파일 : https://drive.google.com/drive/folders/1R1YOr0E5lGBl__Li2Lf_HMDNkwYBS-YR?usp=sharing</br>
 
@@ -32,14 +32,18 @@
 - **Stat, Inventory를 Component로 설계하여 객체의 기능 모듈화**
 
 ## 🎯 프로젝트 기획
-- 포탈을 이용해 다른 맵으로 이동해 플레이하는 3D 액션 RPG
-- 👾 다양한 **스테이지 및 몬스터 및 보스 몬스터**와의 전투 구현
+- 🎮포탈을 이용해 다른 맵으로 이동해 플레이하는 3D 액션 RPG 
+- 👾 다양한 **스테이지** 및 **몬스터**와 **보스 몬스터**와의 전투 구현
 - 🛒 **NPC와 상호작용을 통한 상점 시스템** 구현
+- 🛍️**인벤토리 및 장비 장착과 아이템 사용 기능** 구현 
+- 📊**Stat UI**로 Player Stat 조절 
 - ✨ **스킬 이펙트 및 사운드를 활용한 타격감 있는 전투 시스템**
 - 🎭 **게임 진행 및 스테이지 관리 기능** 구현
 - 🔗 **GitHub를 이용한 협업 및 코드 리뷰 체계 구축**
 - 💡 **C++의 객체 지향적 특징 활용**
 - ⚙️ **컴포넌트 및 싱글톤 패턴을 활용한 매니저 시스템 구현**
+- 🗃️**DataTable을 이용한 Data 관리** 
+- 🎮**GameInstance**와 **GameModeBase** 게임 단계 관리 
 - 🧠 **Unreal Engine의 AI, UI, Animation 기능 활용 및 응용**
 
 ## 🔍 클래스 구조도
