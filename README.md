@@ -75,7 +75,14 @@
 > 잘못된 객체 참조및 알맞지 않은 UPROPERTY() 사용
 
 ✅ **해결 방법**  
-> GC디버깅을 이용해 객체 확인 후 Destroy()및 reset() 확인과 UPROPERTY() 확인
+> GC디버깅을 이용해 객체 확인 후 Destroy()및 reset() 확인과 UPROPERTY() 확인</br>
+
+###  Map 이동시 기존 데이터 오류   
+🔍 **원인**</br>
+> OpenLevel함수로 Map이동시 기존데이터가 삭제됨
+
+✅ **해결 방법**  
+> GameInstance를 통해 이동전 데이터 Save 후 이동완료시 Load
 
 ###  몬스터가 스폰 될떄 마다 렉이 심하게 걸림
 🔍 **원인**</br>
