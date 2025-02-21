@@ -6,6 +6,21 @@
 본 프로젝트는 6주 동안 **TEAM_YP2K**에서 개발한 언리얼 엔진 기반 3D 액션 게임입니다. 🎮  
 4인 팀으로 진행한 프로젝트이며, 깃허브를 활용하여 협업을 진행했습니다. 주요 클래스 및 구조를 C++ 코드 기반으로 설명합니다.
 
+## 🎯 프로젝트 기획
+- 🎮 포탈을 이용해 다른 맵으로 이동해 플레이하는 3D 액션 RPG 
+- 👾 다양한 **스테이지** 및 **몬스터**와 **보스 몬스터**와의 전투 구현
+- 🛒 **NPC와 상호작용을 통한 상점 시스템** 구현
+- 🛍️ **인벤토리 및 장비 장착과 아이템 사용 기능** 구현 
+- 📊 **Stat UI**로 Player Stat 조절 
+- ✨ **스킬 이펙트 및 사운드를 활용한 타격감 있는 전투 시스템**
+- 🎭 **게임 진행 및 스테이지 관리 기능** 구현
+- 🔗 **GitHub를 이용한 협업 및 코드 리뷰 체계 구축**
+- 💡 **C++의 객체 지향적 특징 활용**
+- ⚙️ **컴포넌트 및 싱글톤 패턴을 활용한 매니저 시스템 구현**
+- 🗃️ **DataTable을 이용한 Data 관리** 
+- 🎮 **GameInstance**와 **GameModeBase** 게임 단계 관리 
+- 🧠 **Unreal Engine의 AI, UI, Animation 기능 활용 및 응용**
+
 ## 🔥 맡은 역할
 
 ### Player 및 Monster 구현
@@ -24,17 +39,13 @@
 
 ### Boss Monster 구현
 - **보스 등장 연출(Scene) 구현**
-- **Behavior Tree 설계 및 AI 패턴 적용**
-<img width="600" alt="Image" src="https://github.com/user-attachments/assets/86d00f94-024d-475b-96bd-c79c1c9d002f" />
+- **Behavior Tree 설계 및 AI 패턴 적용**</br>
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/86d00f94-024d-475b-96bd-c79c1c9d002f" /> </br>
 - **주변 사물과 상호작용을 이용한 기믹**
-```
-
-```
-
 
 
 ### Component 및 Manager 시스템 개발
-- **사운드 및 이펙트 및 UI Manager로 관리**
+- ** Sound 및 Effect 및 UI Manager로 관리**
 ```
 // Map을 이용해 저장 및 관리,사용
 void ASoundManager::PlaySound(FString name, FVector location)
@@ -92,20 +103,7 @@ void AMyPlayer::PostInitializeComponents()
 
 ``` 
 
-## 🎯 프로젝트 기획
-- 🎮 포탈을 이용해 다른 맵으로 이동해 플레이하는 3D 액션 RPG 
-- 👾 다양한 **스테이지** 및 **몬스터**와 **보스 몬스터**와의 전투 구현
-- 🛒 **NPC와 상호작용을 통한 상점 시스템** 구현
-- 🛍️ **인벤토리 및 장비 장착과 아이템 사용 기능** 구현 
-- 📊 **Stat UI**로 Player Stat 조절 
-- ✨ **스킬 이펙트 및 사운드를 활용한 타격감 있는 전투 시스템**
-- 🎭 **게임 진행 및 스테이지 관리 기능** 구현
-- 🔗 **GitHub를 이용한 협업 및 코드 리뷰 체계 구축**
-- 💡 **C++의 객체 지향적 특징 활용**
-- ⚙️ **컴포넌트 및 싱글톤 패턴을 활용한 매니저 시스템 구현**
-- 🗃️ **DataTable을 이용한 Data 관리** 
-- 🎮 **GameInstance**와 **GameModeBase** 게임 단계 관리 
-- 🧠 **Unreal Engine의 AI, UI, Animation 기능 활용 및 응용**
+
 
 ## 🔍 클래스 구조도
 ```
