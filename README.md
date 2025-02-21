@@ -25,11 +25,35 @@
 ### Boss Monster 구현
 - **보스 등장 연출(Scene) 구현**
 - **Behavior Tree 설계 및 AI 패턴 적용**
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/86d00f94-024d-475b-96bd-c79c1c9d002f" />
 - **주변 사물과 상호작용을 이용한 기믹**
+```
+
+```
+
 
 
 ### Component 및 Manager 시스템 개발
-- **사운드 및 이펙트 관리** (Object Pooling 기법 활용)
+- **사운드 및 이펙트 및 UI Manager로 관리**
+```
+// Map을 이용해 저장 및 관리,사용
+void ASoundManager::PlaySound(FString name, FVector location)
+{
+	if (_soundEffectTable.Contains(name) == false)
+		return;
+
+	auto findSound = _soundEffectTable[name].FindByPredicate(
+		[](ASoundEffect *soundEffect) -> bool
+		{
+			if (soundEffect->IsPlaying())
+				return false;
+			return true;
+		});
+
+	if (findSound)
+		(*findSound)->Play(location);
+}
+```
 - **Stat, Inventory를 Component로 설계하여 객체의 기능 모듈화**
 - **Delegate**으로 이벤트 처리
 ```
