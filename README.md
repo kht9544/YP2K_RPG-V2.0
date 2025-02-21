@@ -3,23 +3,40 @@
 - 패키징파일 : https://drive.google.com/drive/folders/1R1YOr0E5lGBl__Li2Lf_HMDNkwYBS-YR?usp=sharing</br>
 
 ## 📝 개요
-본 프로젝트는 6주 동안 **TEAM_YP2K**에서 개발한 언리얼 엔진 기반 3D 액션 게임입니다. 🎮  
+본 프로젝트는 7주 동안 **TEAM_YP2K**에서 개발한 언리얼 엔진 기반으로 만든 다양한 스테이지와 다양한 몬스터를 사냥하며 성장하는 던전형 RPG게임입니다.🎮 
 4인 팀으로 진행한 프로젝트이며, 깃허브를 활용하여 협업을 진행했습니다. 주요 클래스 및 구조를 C++ 코드 기반으로 설명합니다.
 
-## 🎯 프로젝트 기획
-- 🎮 포탈을 이용해 다른 맵으로 이동해 플레이하는 3D 액션 RPG 
-- 👾 다양한 **스테이지** 및 **몬스터**와 **보스 몬스터**와의 전투 구현
-- 🛒 **NPC와 상호작용을 통한 상점 시스템** 구현
-- 🛍️ **인벤토리 및 장비 장착과 아이템 사용 기능** 구현 
-- 📊 **Stat UI**로 Player Stat 조절 
-- ✨ **스킬 이펙트 및 사운드를 활용한 타격감 있는 전투 시스템**
-- 🎭 **게임 진행 및 스테이지 관리 기능** 구현
-- 🔗 **GitHub를 이용한 협업 및 코드 리뷰 체계 구축**
-- 💡 **C++의 객체 지향적 특징 활용**
-- ⚙️ **컴포넌트 및 싱글톤 패턴을 활용한 매니저 시스템 구현**
-- 🗃️ **DataTable을 이용한 Data 관리** 
-- 🎮 **GameInstance**와 **GameModeBase** 게임 단계 관리 
-- 🧠 **Unreal Engine의 AI, UI, Animation 기능 활용 및 응용**
+## 🔍 클래스 구조도
+```
+-MyGameInstance (게임 단계 및 데이터 관리)
+-AActor
+ ├── AMyEffectManager (이펙트 관리)
+ ├── AMySoundManager (사운드 관리)
+ ├── AMyUIManager (UI 관리)
+ ├── AGameModeBase (게임 진행 관리)
+ │   ├── AStartGameModeBase (시작 메뉴 게임 모드 클래스)
+ │   ├── AMyGameModeBase (일반 게임 모드 클래스)
+ │   │   ├── ANormalGameModeBase (사냥 스테이지 게임 모드)
+ │   │   │   ├── AStage1NormalGameModeBase (스테이지1)
+ │   │   │   ├── AStage2NormalGameModeBase (스테이지2)
+ │   ├── ABossGameModeBase (보스 스테이지 게임 모드)
+ │   │   ├── AStage1BossGameModeBase (스테이지1)
+ │   │   ├── AStage2BossGameModeBase (스테이지2)
+ │   ├── AHomeGameModeBase (마을 스테이지 게임 모드)
+ ├── AMyCreature (ACharacter 상속)
+ │   ├── AMyPlayer (플레이어)
+ │   ├── AMyMonster (몬스터)
+ │   │   ├── AMyNormalMonster (일반 몬스터)
+ │   │   ├── AMyEpicMonster (에픽 몬스터)
+ │   │   ├── AMyBossMonster (보스 몬스터)
+ ├── AMyComponent (컴포넌트)
+ │   ├── UStatComponent (스탯 관리)
+ │   ├── UInventoryComponent (인벤토리 관리)
+ │   ├── UShopComponent (상점 관리)
+ 
+
+
+```
 
 ## 🔥 맡은 역할
 
@@ -102,32 +119,9 @@ void AMyPlayer::PostInitializeComponents()
 	}
 }
 
-``` 
-
-
-
-## 🔍 클래스 구조도
 ```
- ├── AMyEffectManager (이펙트 관리)
- ├── AMySoundManager (사운드 관리)
- ├── AMyUIManager (UI 관리)
- ├── AMyCreature (ACharacter 상속)
- │   ├── AMyPlayer (플레이어)
- │   ├── AMyMonster (몬스터)
- │   │   ├── AMyNormalMonster (일반 몬스터)
- │   │   ├── AMyEpicMonster (에픽 몬스터)
- │   │   ├── AMyBossMonster (보스 몬스터)
- ├── AGameModeBase (게임 진행 관리)
- |   ├── AMyGameModeBase (일반 게임 모드 클래스)
- │   │   ├── ANormalGameModeBase (사냥 스테이지 게임 모드)
- │   │   |   ├── AStage1NormalGameModeBase (스테이지1)
- │   │   |   ├── AStage2NormalGameModeBase (스테이지2)
- │   │   ├── ABossGameModeBase(보스 스테이지 게임모드)
- │   │   |   ├── AStage1BossGameModeBase (스테이지1)
- │   │   |   ├── AStage2BossGameModeBase (스테이지2)
- │   |   ├── AHomeGameModeBase (마을 스테이지 게임모드)
 
-```
+
 ## ⚠️ 오류 상황과 해결 방안
 
 ###  GC오류  
