@@ -154,7 +154,7 @@ void AMyPlayer::PostInitializeComponents()
 ✅ **해결 방법**  
 > Object Pooling 사용 으로 메모리 최적화
 ```
-// 몬스터 오브젝트풀링 (20명의 몬스터를 스폰해둠)
+// 몬스터 오브젝트풀링 (몬스터를 비활성 상태로 스폰해둠)
 void ANormalGameModeBase::InitializeMonsterPool()
 {
 	if (!_monster) return;
