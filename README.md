@@ -27,12 +27,14 @@
 - **Behavior Tree 설계 및 AI 패턴 적용**
 - **주변 사물과 상호작용을 이용한 기믹**
 
+
 ### Component 및 Manager 시스템 개발
 - **사운드 및 이펙트 관리** (Object Pooling 기법 활용)
 - **Stat, Inventory를 Component로 설계하여 객체의 기능 모듈화**
 - **Delegate**으로 이벤트 처리
 ```
-  void UStatComponent::SetHp(int32 hp)
+//HP관련 이벤트 처리
+void UStatComponent::SetHp(int32 hp)
 {
 	_curHp = hp;
 	if (_curHp <= 0)
@@ -49,6 +51,21 @@
 	float ratio = _curHp / (float)_maxHp;
 	_PlHPDelegate.Broadcast(ratio);
 }
+// Delegate 바인딩
+void AMyPlayer::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	_KnightanimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+	if (_KnightanimInstance->IsValidLowLevelFast())
+	{
+		_KnightanimInstance->OnMontageEnded.AddDynamic(this, &AMyPlayer::OnAttackEnded);
+		_KnightanimInstance->_attackDelegate.AddUObject(this, &ACreature::AttackHit);
+		_KnightanimInstance->_deathDelegate.AddUObject(this, &ACreature::Disable);
+		_KnightanimInstance->_comboDelegate.AddUObject(this, &AMyPlayer::NextCombo);
+	}
+}
+
 ``` 
 
 ## 🎯 프로젝트 기획
@@ -95,14 +112,17 @@
 > 잘못된 객체 참조및 알맞지 않은 UPROPERTY() 사용
 
 ✅ **해결 방법**  
-> GC디버깅을 이용해 객체 확인 후 Destroy()및 reset() 확인과 UPROPERTY() 확인</br>
+> GC디버깅을 이용해 객체 확인 후 Destroy()및 reset() 확인과 UPROPERTY() 확인
 
+-----------------------------------------------------------------------------------------------------------------------------</br>
 ###  Map 이동시 기존 데이터 오류   
 🔍 **원인**</br>
 > OpenLevel함수로 Map이동시 기존데이터가 삭제됨
 
 ✅ **해결 방법**  
 > GameInstance를 통해 이동전 데이터 Save 후 이동완료시 Load
+> 
+-----------------------------------------------------------------------------------------------------------------------------</br>
 
 ###  몬스터가 스폰 될떄 마다 렉이 심하게 걸림
 🔍 **원인**</br>
@@ -130,6 +150,7 @@ void ANormalGameModeBase::InitializeMonsterPool()
 	}
 }
 ```
+-----------------------------------------------------------------------------------------------------------------------------</br>
 
 ###  스킬이 이상한 곳에도 사용되는 현상 
 🔍 **원인**</br>
@@ -153,6 +174,8 @@ if (HitResult.bBlockingHit)
 		}
 ```
 
+-----------------------------------------------------------------------------------------------------------------------------</br>
+
 ## 🚀 프로젝트를 통해 배운 점
 1. **C++ 기반 객체 지향 설계** 🏗️
    - 상속 및 다형성을 활용하여 확장 가능한 게임 구조 설계
@@ -166,7 +189,7 @@ if (HitResult.bBlockingHit)
    - Object Pooling 기법을 활용한 최적화된 이펙트 및 사운드 관리
    - Component를 활용해 객체별로 독립적인 데이터 관리
    - AI 기반 파티 시스템과 몬스터 공격 및 보스 몬스터 특수 패턴 구현
-   - UI기능 구현과 Deligate 활용
+   - UI기능 구현과 Delegate 활용
    - Unreal을 이용한 Anim제작
    - GameMode와 GameInstance를 이용해 게임 설계 및 데이터 관리
 
