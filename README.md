@@ -24,7 +24,7 @@
 ## 🔥 맡은 역할
 
 ### Player 및 Monster 구현
-- **Skill,InvnetoryUI** 구현
+- **Skill,Invnetory** 구현
 - **장비 및 소비 Item** 구현
 - **전투 시스템(가드,회피,몬스터처리시 경험치 및 아이템 획득)** 개발
 - **체력 와 마나 및 경험치 UI** 연동
@@ -39,9 +39,10 @@
 
 ### Boss Monster 구현
 - **보스 등장 연출(Scene) 구현**
+- **주변 사물과 상호작용을 이용한 기믹**
 - **Behavior Tree 설계 및 AI 패턴 적용**</br>
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/86d00f94-024d-475b-96bd-c79c1c9d002f" /> </br>
-- **주변 사물과 상호작용을 이용한 기믹**
+
 
 
 ### Component 및 Manager 시스템 개발
