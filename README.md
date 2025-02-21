@@ -30,6 +30,26 @@
 ### Component 및 Manager 시스템 개발
 - **사운드 및 이펙트 관리** (Object Pooling 기법 활용)
 - **Stat, Inventory를 Component로 설계하여 객체의 기능 모듈화**
+- **Delegate**으로 이벤트 처리
+```
+  void UStatComponent::SetHp(int32 hp)
+{
+	_curHp = hp;
+	if (_curHp <= 0)
+	{
+		_deathDelegate.Broadcast();
+		_deathDelegate.Clear();
+		_curHp = 0;
+	}
+	if (_curHp > _maxHp)
+	{
+		_curHp = _maxHp;
+	}
+
+	float ratio = _curHp / (float)_maxHp;
+	_PlHPDelegate.Broadcast(ratio);
+}
+``` 
 
 ## 🎯 프로젝트 기획
 - 🎮 포탈을 이용해 다른 맵으로 이동해 플레이하는 3D 액션 RPG 
