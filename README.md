@@ -1,4 +1,4 @@
-# YPK_RPG V2.0 </br>
+[# YPK_RPG V2.0 </br>
 - 유튜브링크 : https://youtu.be/NWj8hIFVd30</br>
 - 패키징파일 : https://drive.google.com/drive/folders/1R1YOr0E5lGBl__Li2Lf_HMDNkwYBS-YR?usp=sharing</br>
 
@@ -154,6 +154,7 @@ void AMyPlayer::PostInitializeComponents()
 ✅ **해결 방법**  
 > Object Pooling 사용 으로 메모리 최적화
 ```
+// 몬스터 오브젝트풀링 (20명의 몬스터를 스폰해둠)
 void ANormalGameModeBase::InitializeMonsterPool()
 {
 	if (!_monster) return;
@@ -172,6 +173,33 @@ void ANormalGameModeBase::InitializeMonsterPool()
 		}
 	}
 }
+
+// 몬스터 스폰시 아직 활성화 되지 않은 몬스터 활성화
+if (_monsterPool.Num() == 0) return;
+for (int i = 0; i < size; ++i)
+{
+	ANormalMonster* AvailableMonster = nullptr;
+	for (ANormalMonster* Monster : _monsterPool)
+	{
+		if (Monster->IsHidden())
+		{
+			AvailableMonster = Monster;
+			break;
+		}
+	}
+	if (!AvailableMonster) return;
+
+	float SpawnRadius = 500.0f;
+
+	FVector2D RandOffset = FMath::RandPointInCircle(SpawnRadius);
+	FVector SpawnLocation = BaseLocation + FVector(RandOffset.X, RandOffset.Y, 0.0f);
+
+	AvailableMonster->SetActorLocation(SpawnLocation);
+	AvailableMonster->SetActorRotation(FRotator::ZeroRotator);
+	AvailableMonster->SetActorHiddenInGame(false);
+	AvailableMonster->SetActorEnableCollision(true);
+}
+
 ```
 -----------------------------------------------------------------------------------------------------------------------------</br>
 
@@ -220,3 +248,4 @@ if (HitResult.bBlockingHit)
 4. **게임 플레이 및 사용자 경험 향상** 🎨
    - 사운드와 이펙트를 결합하여 타격감 개선
    - 체력바 및 경험치 시스템을 적용하여 게임 몰입도 향상
+](url)
