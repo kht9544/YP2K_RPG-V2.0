@@ -205,18 +205,18 @@ for (int i = 0; i < size; ++i)
 > ImpactNorma(법선벡터) 사용으로 일정 기울기에만 스킬이 사용되도록 수정
 ```
 if (HitResult.bBlockingHit)
-		{
-			if (HitResult.ImpactNormal.Z > 0.5f)
-			{
-				FVector NewLocation = HitResult.ImpactPoint;
-				TargetSkillLocation = NewLocation;
-				TargetSkillLocation.Z += 1.0f;
+{
+	if (HitResult.ImpactNormal.Z > 0.5f)
+	{
+		FVector NewLocation = HitResult.ImpactPoint;
+		TargetSkillLocation = NewLocation;
+		TargetSkillLocation.Z += 1.0f;
 
-				SkillRotation = HitResult.ImpactNormal.Rotation();
-				SpawnedDecalActor->SetActorLocation(TargetSkillLocation);
-				SpawnedDecalActor->SetActorRotation(SkillRotation);
-			}
-		}
+		SkillRotation = HitResult.ImpactNormal.Rotation();
+		SpawnedDecalActor->SetActorLocation(TargetSkillLocation);
+		SpawnedDecalActor->SetActorRotation(SkillRotation);
+	}
+}
 ```
 
 -----------------------------------------------------------------------------------------------------------------------------</br>
