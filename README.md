@@ -1,4 +1,4 @@
-[# YPK_RPG V2.0 </br>
+# YPK_RPG V2.0 </br>
 - 유튜브링크 : https://youtu.be/NWj8hIFVd30</br>
 - 패키징파일 : https://drive.google.com/drive/folders/1R1YOr0E5lGBl__Li2Lf_HMDNkwYBS-YR?usp=sharing</br>
 
