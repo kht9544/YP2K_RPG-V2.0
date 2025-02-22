@@ -143,11 +143,12 @@ void AMyPlayer::PostInitializeComponents()
 
 ###  아이템과 인벤토리UI 연동 오류
 🔍 **원인**</br>
-> 아이템과 인벤토리(컴포넌트)구현 단계에서 UI담당 팀원과 충분한 소통을 하지 않아 오류 발생
+> 아이템과 인벤토리 컵포넌트와 UI담당 팀원과 충분한 소통을 하지 않아 오류 발생
+> Texture과 Type을 서로 다르게 사용하고 있었음
 
 ✅ **해결 방법**  
-> 회의를 통해 문제 발견 및 해결 (Texture과 Type을 서로 다르게 사용하고 있었음)
-> Item을 DataTable을 이용해 사용하기
+> 회의를 통해 문제 발견 및 해결 
+> Item을 하드코딩해 사용하지않고 DataTable을 이용해 Code로 관리 및 사용
 ```
 //해결 코드
 void ABaseItem::SetItemWithCode(int32 itemCode)
@@ -176,6 +177,33 @@ void ABaseItem::SetItemWithCode(int32 itemCode)
 	}
 } 
 
+
+//Save
+for (auto &Elem : EquipItems)
+{
+	if (Elem.Value)
+	{
+		SavedEquipCodes.Add(Elem.Key, Elem.Value->GetCode());
+	}
+	else
+	{
+               SavedEquipCodes.Add(Elem.Key, -1);
+	}
+}
+ //Load
+for (auto &Elem : SavedEquipCodes)
+{
+	int32 Code = Elem.Value;
+	if (Code != -1)
+	{
+		AEquipItem* NewEquip = GetWorld()->SpawnActor<AEquipItem>(AEquipItem::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
+                if (NewEquip)
+                {
+                    NewEquip->SetItemWithCode(Code);
+                    InventoryComponent->AddItemToEquip(Elem.Key, NewEquip);
+                }
+	}
+]
 ```
 ------------------------------------------------------------------------------------------------------------------</br>
 
