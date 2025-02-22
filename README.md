@@ -41,7 +41,7 @@
 ## 🔥 맡은 역할
 
 ### Player 및 Monster 구현
-- **Skill,Invnetory** 구현
+- **Skill,Stat** 구현
 - **장비 및 소비 Item** 구현
 - **전투 시스템(가드,회피,몬스터처리시 경험치 및 아이템 획득)** 개발
 - **체력 와 마나 및 경험치 UI** 연동
@@ -139,6 +139,44 @@ void AMyPlayer::PostInitializeComponents()
 ✅ **해결 방법**  
 > GameInstance를 통해 이동전 데이터 Save 후 이동완료시 Load
 
+------------------------------------------------------------------------------------------------------------------</br>
+
+###  아이템과 인벤토리UI 연동 오류
+🔍 **원인**</br>
+> 아이템과 인벤토리(컴포넌트)구현 단계에서 UI담당 팀원과 충분한 소통을 하지 않아 오류 발생
+
+✅ **해결 방법**  
+> 회의를 통해 문제 발견 및 해결 (Texture과 Type을 서로 다르게 사용하고 있었음)
+> Item을 DataTable을 이용해 사용하기
+```
+//해결 코드
+void ABaseItem::SetItemWithCode(int32 itemCode)
+{
+	auto gameinstance = Cast<UMyGameInstance>(GetWorld()->GetGameInstance());
+	if (gameinstance != nullptr)
+	{
+		FItemData *data = gameinstance->GetConsumeItemData(itemCode);
+		if (data == nullptr || data->_Name == TEXT(""))
+		{
+			return;
+		}
+
+		_Code = data->_Code;
+		_Texture = data->_Texture;
+		_Mesh = data->_Mesh;
+		_Value = data->_Value;
+		_Price = data->_Price;
+		_Name = data->_Name;
+		_Type = data->_Type;
+		_ModStatType = data->_ModTarget;
+		_Description = data->_Description;
+		_Equip = data->_Equip;
+
+		_meshComponent->SetStaticMesh(_Mesh);
+	}
+} 
+
+```
 ------------------------------------------------------------------------------------------------------------------</br>
 
 ###  몬스터가 스폰 될떄 마다 렉이 심하게 걸림
