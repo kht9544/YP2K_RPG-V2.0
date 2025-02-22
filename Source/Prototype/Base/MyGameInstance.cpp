@@ -88,6 +88,7 @@ UMyGameInstance::UMyGameInstance()
 	SavedSkeletalMeshes.SetNum(6);
 }
 
+
 void UMyGameInstance::SavePlayerStats(class UStatComponent *StatComponent)
 {
 	if (StatComponent)
@@ -132,107 +133,86 @@ void UMyGameInstance::LoadPlayerStats(class UStatComponent *StatComponent)
 
 void UMyGameInstance::SaveInventory(class UInventoryComponent *InventoryComponent)
 {
-	if (InventoryComponent)
-	{
-		SavedInventoryData.Empty();
-		SavedEquipData.Empty();
+	 if (InventoryComponent)
+    {
+        SavedInventoryCodes.Empty();
+        SavedEquipCodes.Empty();
 
-		TArray<ABaseItem *> Items = InventoryComponent->GetItemSlots();
-		TMap<FString, AEquipItem *> EquipItems = InventoryComponent->GetEquipSlots();
-
-		for (ABaseItem *Item : Items)
-		{
-			if (Item)
+        TArray<ABaseItem *> Items = InventoryComponent->GetItemSlots();
+        for (int32 i = 0; i < Items.Num(); ++i)
+        {
+            ABaseItem* Item = Items[i];
+            if (Item)
+            {
+                SavedInventoryCodes.Add(Item->GetCode());
+            }
+            else
 			{
-				FItemData ItemData;
-				ItemData._Code = Item->GetCode();
-				ItemData._Name = Item->GetName();
-				ItemData._Type = Item->GetType();
-				ItemData._ModTarget = Item->GetModStat();
-				ItemData._Description = Item->GetDesc();
-				ItemData._Price = Item->GetPrice();
-				ItemData._Value = Item->GetValue();
-				ItemData._Mesh = Item->GetSkeletalMesh();
-				ItemData._Texture = Item->GetTexture();
-				ItemData._Equip = Item->GetEquip();
+                SavedInventoryCodes.Add(-1);
+            }
+        }
 
-				SavedInventoryData.Add(ItemData);
-			}
-		}
+        TMap<FString, AEquipItem *> EquipItems = InventoryComponent->GetEquipSlots();
+        for (auto &Elem : EquipItems)
+        {
+            if (Elem.Value)
+            {
+                SavedEquipCodes.Add(Elem.Key, Elem.Value->GetCode());
+            }
+            else
+            {
+                SavedEquipCodes.Add(Elem.Key, -1);
+            }
+        }
 
-		for (auto &Item : EquipItems)
-		{
-			if (Item.Value)
-			{
-				FItemData ItemData;
-				ItemData._Code = Item.Value->GetCode();
-				ItemData._Name = Item.Value->GetName();
-				ItemData._Type = Item.Value->GetType();
-				ItemData._ModTarget = Item.Value->GetModStat();
-				ItemData._Description = Item.Value->GetDesc();
-				ItemData._Price = Item.Value->GetPrice();
-				ItemData._Value = Item.Value->GetValue();
-				ItemData._Mesh = Item.Value->GetSkeletalMesh();
-				ItemData._Texture = Item.Value->GetTexture();
-				ItemData._Equip = static_cast<int>(Item.Value->GetEquipType());
-
-				SavedEquipData.Add(Item.Key, ItemData);
-			}
-		}
-		SavedPlayerStats.Money = InventoryComponent->GetMoney();
-	}
+        SavedPlayerStats.Money = InventoryComponent->GetMoney();
+    }
 }
 
 void UMyGameInstance::LoadInventory(class UInventoryComponent *InventoryComponent)
 {
-	if (InventoryComponent)
-	{
-		InventoryComponent->InitSlot();
+	 if (InventoryComponent)
+    {
+        InventoryComponent->InitSlot();
 
-		for (const FItemData &ItemData : SavedInventoryData)
-		{
-			ABaseItem *_newItem = nullptr;
+        for (int32 i = 0; i < SavedInventoryCodes.Num(); ++i)
+        {
+            int32 Code = SavedInventoryCodes[i];
+            if (Code != -1)
+            {
+                ABaseItem* NewItem = nullptr;
+                if (GetConsumeItemData(Code))
+                {
+                    NewItem = GetWorld()->SpawnActor<AConsumeItem>(AConsumeItem::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
+                }
+                else if (GetEquipItemData(Code))
+                {
+                    NewItem = GetWorld()->SpawnActor<AEquipItem>(AEquipItem::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
+                }
+                
+                if (NewItem)
+                {
+                    NewItem->SetItemWithCode(Code);
+                    InventoryComponent->AddItem(i, NewItem);
+                }
+            }
+        }
 
-			if (ItemData._Type == ItemType::Consume)
-			{
-				_newItem = GetWorld()->SpawnActor<AConsumeItem>(AConsumeItem::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
-				_newItem->SetItemWithCode(ItemData._Code);
-			}
-			else if (ItemData._Type == ItemType::Equipment)
-			{
-				AEquipItem *EquipItem = GetWorld()->SpawnActor<AEquipItem>(AEquipItem::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
-				EquipItem->SetItemWithCode(ItemData._Code);
-				EquipItem->SetEquipType(ItemData._Equip);
-				_newItem = EquipItem;
-			}
-
-			if (_newItem)
-			{
-				InventoryComponent->AddItemToSlot(_newItem);
-			}
-		}
-
-		for (const auto &Item : SavedEquipData)
-		{
-			AEquipItem *_newItem = nullptr;
-			FString EquipType = Item.Key;
-			const FItemData &ItemData = Item.Value;
-
-			if (ItemData._Type == ItemType::Equipment)
-			{
-				AEquipItem *EquipItem = GetWorld()->SpawnActor<AEquipItem>(AEquipItem::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
-				if (EquipItem)
-				{
-					EquipItem->SetItemWithCode(ItemData._Code);
-					EquipItem->SetEquipType(ItemData._Equip);
-					_newItem = EquipItem;
-
-					InventoryComponent->AddItemToEquip(EquipType, _newItem);
-				}
-			}
-		}
-		InventoryComponent->AddMoney(SavedPlayerStats.Money);
-	}
+        for (auto &Elem : SavedEquipCodes)
+        {
+            int32 Code = Elem.Value;
+            if (Code != -1)
+            {
+                AEquipItem* NewEquip = GetWorld()->SpawnActor<AEquipItem>(AEquipItem::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
+                if (NewEquip)
+                {
+                    NewEquip->SetItemWithCode(Code);
+                    InventoryComponent->AddItemToEquip(Elem.Key, NewEquip);
+                }
+            }
+        }
+        InventoryComponent->AddMoney(SavedPlayerStats.Money);
+    }
 }
 
 void UMyGameInstance::SavePlayerSkeletal(class AMyPlayer *player)
@@ -257,6 +237,13 @@ void UMyGameInstance::LoadPlayerSkeletal(class AMyPlayer *player)
 		player->GetSwordBodyMesh()->SetSkeletalMesh(SavedSkeletalMeshes[3]);
 		player->GetShieldBodyMesh()->SetSkeletalMesh(SavedSkeletalMeshes[4]);
 	}
+}
+
+void UMyGameInstance::SavePlayer(class AMyPlayer *player)
+{
+	SavePlayerStats(player->GetStatComponent());
+	SaveInventory(player->GetInventory());
+	SavePlayerSkeletal(player);
 }
 
 TArray<ABaseItem *> UMyGameInstance::GetInvenItemList()

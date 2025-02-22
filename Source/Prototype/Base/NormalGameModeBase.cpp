@@ -72,7 +72,6 @@ void ANormalGameModeBase::InitializeMonsterPool()
 		{
 			Monster->SetActorHiddenInGame(true);
 			Monster->SetActorEnableCollision(false);
-			Monster->SetLifeSpan(0.0f);
 			_monsterPool.Add(Monster);
 		}
 	}

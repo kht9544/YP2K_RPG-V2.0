@@ -14,8 +14,7 @@ enum class EItemType : uint8
     LowerArmor,
     ShoulderArmor,
     Sword,
-    Shield,
-    END
+    Shield
 };
 
 UCLASS()

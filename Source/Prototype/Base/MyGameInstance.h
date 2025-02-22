@@ -38,6 +38,7 @@ class PROTOTYPE_API UMyGameInstance : public UGameInstance
 
 public:
 	UMyGameInstance();
+
 	void SavePlayerStats(class UStatComponent *StatComponent);
 	void LoadPlayerStats(class UStatComponent *StatComponent);
 
@@ -46,6 +47,11 @@ public:
 
 	void SavePlayerSkeletal(class AMyPlayer *player);
 	void LoadPlayerSkeletal(class AMyPlayer *player);
+
+	void SavePlayer(class AMyPlayer *player);
+
+	TArray<int32> SavedInventoryCodes; 
+	TMap<FString, int32> SavedEquipCodes;	
 
 	UPROPERTY()
 	TArray<FItemData> SavedInventoryData;

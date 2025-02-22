@@ -51,6 +51,8 @@ void AMyGameModeBase::InitializePlayer()
                 {
                     GameInstance->LoadInventory(InvenComponent);
                 }
+
+                Player->GetStatComponent()->Reset();
             }   
         }
 
