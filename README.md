@@ -33,9 +33,10 @@
  │   ├── UStatComponent (스탯 관리)
  │   ├── UInventoryComponent (인벤토리 관리)
  │   ├── UShopComponent (상점 관리)
- 
-
-
+ 		.
+		.
+		.
+		.
 ```
 
 ## 🔥 맡은 역할
@@ -126,18 +127,10 @@ void AMyPlayer::PostInitializeComponents()
 
 ###  GC오류  
 🔍 **원인**</br>
-> 잘못된 객체 참조및 알맞지 않은 UPROPERTY() 사용
+> 잘못된 객체 참조및 알맞지 않은 UPROPERTY() 사용(맵 이동시 Item이 제대로 초기화 되지 않음)
 
 ✅ **해결 방법**  
-> GC디버깅을 이용해 객체 확인 후 Destroy()및 reset() 확인과 UPROPERTY() 확인
-
-------------------------------------------------------------------------------------------------------------------</br>
-###  Map 이동시 기존 데이터 오류   
-🔍 **원인**</br>
-> OpenLevel함수로 Map이동시 기존데이터가 삭제됨
-
-✅ **해결 방법**  
-> GameInstance를 통해 이동전 데이터 Save 후 이동완료시 Load
+> Crash Report 및 Log을 이용해 초기화 안된 객체 확인 후 Destroy()및 reset() 확인과 UPROPERTY() 확인
 
 ------------------------------------------------------------------------------------------------------------------</br>
 
@@ -148,7 +141,7 @@ void AMyPlayer::PostInitializeComponents()
 
 ✅ **해결 방법**  
 > 회의를 통해 문제 발견 및 해결 
-> Item을 하드코딩해 사용하지않고 DataTable을 이용해 Code로 관리 및 사용
+> Item을 하드코딩해 구성하지않고 DataTable을 이용해 Code로 관리 및 사용
 ```
 //해결 코드
 void ABaseItem::SetItemWithCode(int32 itemCode)
@@ -162,35 +155,36 @@ void ABaseItem::SetItemWithCode(int32 itemCode)
 			return;
 		}
 
-		_Code = data->_Code;
-		_Texture = data->_Texture;
-		_Mesh = data->_Mesh;
-		_Value = data->_Value;
-		_Price = data->_Price;
-		_Name = data->_Name;
-		_Type = data->_Type;
-		_ModStatType = data->_ModTarget;
-		_Description = data->_Description;
-		_Equip = data->_Equip;
+		ItemData = *data;
 
-		_meshComponent->SetStaticMesh(_Mesh);
+		_meshComponent->SetStaticMesh(ItemData._Mesh);
 	}
-} 
+}
+```
+------------------------------------------------------------------------------------------------------------------</br>
 
+###  Map 이동시 기존 데이터 오류   
+🔍 **원인**</br>
+> OpenLevel함수로 Map이동시 기존데이터가 삭제됨
 
-//Save
+✅ **해결 방법**  
+> GameInstance를 통해 이동전 데이터 Save 후 이동완료시 Load
+```
+//Save 
+TMap<FString, AEquipItem *> EquipItems = InventoryComponent->GetEquipSlots();
 for (auto &Elem : EquipItems)
 {
 	if (Elem.Value)
 	{
-		SavedEquipCodes.Add(Elem.Key, Elem.Value->GetCode());
+                SavedEquipCodes.Add(Elem.Key, Elem.Value->GetCode());
 	}
 	else
 	{
-               SavedEquipCodes.Add(Elem.Key, -1);
+		SavedEquipCodes.Add(Elem.Key, -1);
 	}
 }
- //Load
+
+//Load
 for (auto &Elem : SavedEquipCodes)
 {
 	int32 Code = Elem.Value;
@@ -205,6 +199,7 @@ for (auto &Elem : SavedEquipCodes)
 	}
 ]
 ```
+
 ------------------------------------------------------------------------------------------------------------------</br>
 
 ###  몬스터가 스폰 될떄 마다 렉이 심하게 걸림
