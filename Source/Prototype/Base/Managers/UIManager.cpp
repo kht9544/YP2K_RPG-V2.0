@@ -126,7 +126,7 @@ void AUIManager::OpenUI(UI_LIST ui)
 	if (_isPauseWhenOpen[UIindex])
 		pauseGame.Broadcast();
 
-	if (ui == UI_LIST::Inventory || ui == UI_LIST::Shop || ui == UI_LIST::Options || ui == UI_LIST::Stat)
+	if (ShouldCountUI(ui))
 	{
 		cnt++;
 	}
@@ -138,12 +138,6 @@ void AUIManager::OpenUI(UI_LIST ui)
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeGameAndUI().SetHideCursorDuringCapture(false));
 	}
-
-	_uiList[UIindex]->SetVisibility(ESlateVisibility::Visible);
-	static int32 LastZOrder = 0;
-	LastZOrder++;
-	_uiList[UIindex]->AddToViewport(LastZOrder);
-
 	_uiIsOpen[UIindex] = true;
 }
 
@@ -238,4 +232,12 @@ bool AUIManager::InterectMutual(UI_LIST interectUI)
 	if (_uiIsOpen[(int32)UI_LIST::Inventory])
 		return true;
 	return false;
+}
+
+bool AUIManager::ShouldCountUI(UI_LIST ui)
+{
+	 return ui == UI_LIST::Inventory ||
+           ui == UI_LIST::Shop ||
+           ui == UI_LIST::Options ||
+           ui == UI_LIST::Stat;
 }

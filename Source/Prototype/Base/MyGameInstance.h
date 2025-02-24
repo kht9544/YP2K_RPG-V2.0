@@ -9,6 +9,7 @@
 #include "Component/StatComponent.h"
 #include "Component/InventoryComponent.h"
 #include "../Item/BaseItem.h"
+#include "PlayerStatData.h" 
 #include "Item/Equip/EquipItem.h"
 #include "../Component/ShopComponent.h"
 #include "MyGameInstance.generated.h"
@@ -19,17 +20,6 @@
 #define SoundManager Cast<UMyGameInstance>(GetGameInstance())->GetSoundManager()
 #define EffectManager Cast<UMyGameInstance>(GetGameInstance())->GetEffectManager()
 
-USTRUCT()
-struct FPlayerStatsStruct {
-    GENERATED_BODY()
-    int32 Level, MaxHp, CurHp;
-    int32 MaxMp, CurMp;
-    int32 Str;
-    int32 Dex;
-    int32 Int;
-    int32 Exp, NextExp, BonusPoint, Money;
-    float AttackRadius, AttackRange;
-};
 
 UCLASS()
 class PROTOTYPE_API UMyGameInstance : public UGameInstance
@@ -108,6 +98,9 @@ private:
 	AEffectManager *_effectManager;
 
 	UPROPERTY()
+	UPlayerStatData* SavedPlayerStats;
+
+	UPROPERTY()
 	UDataTable *_statTable;
 
 	UPROPERTY()
@@ -121,6 +114,7 @@ private:
 
 	UPROPERTY()
 	UDataTable *_ConsItemTable;
+	
 	UPROPERTY()
 	UDataTable *_EquipItemTable;
 
@@ -132,9 +126,6 @@ private:
 
 	UPROPERTY()
 	UDataTable *_DragonStatTable;
-
-	UPROPERTY()
-    FPlayerStatsStruct SavedPlayerStats;
 
 	UPROPERTY()
 	TArray<class USkeletalMesh *> SavedSkeletalMeshes;

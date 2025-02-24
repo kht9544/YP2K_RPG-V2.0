@@ -43,25 +43,14 @@ void ABaseItem::SetItemWithCode(int32 itemCode)
 			return;
 		}
 
-		_Code = data->_Code;
-		_Texture = data->_Texture;
-		_Mesh = data->_Mesh;
-		_Value = data->_Value;
-		_Price = data->_Price;
-		_Name = data->_Name;
-		_Type = data->_Type;
-		_ModStatType = data->_ModTarget;
-		_Description = data->_Description;
-		_Equip = data->_Equip;
+		ItemData = *data;
 
-		_meshComponent->SetStaticMesh(_Mesh);
+		_meshComponent->SetStaticMesh(ItemData._Mesh);
 	}
 }
 
 void ABaseItem::Init()
 {
-	_meshComponent->SetStaticMesh(_Mesh);
-
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	PrimaryActorTick.bCanEverTick = true;

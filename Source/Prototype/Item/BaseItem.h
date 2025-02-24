@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/DataTable.h" 
 #include "BaseItem.generated.h"
 
 enum class StatType;
@@ -15,7 +16,7 @@ enum class ItemType
 	Consume,
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FItemData : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -45,13 +46,13 @@ struct FItemData : public FTableRowBase
 	int _Value;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMesh *_Mesh;
+	UStaticMesh* _Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UTexture2D *_Texture;
+	UTexture2D* _Texture;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USkeletalMesh *_Skeletal;
+	USkeletalMesh* _Skeletal;
 };
 
 UCLASS()
@@ -86,16 +87,16 @@ public:
 
 	virtual void SetPlayer();
 
-	int GetCode() { return _Code; }
-	FString GetName() { return _Name; }
-	ItemType GetType() { return _Type; }
-	StatType GetModStat() { return _ModStatType; }
-	FString GetDesc() { return _Description; }
-	int32 GetPrice() { return _Price; }
-	int32 GetValue() { return _Value; }
-	UStaticMesh *GetSkeletalMesh() { return _Mesh; }
-	UTexture2D *GetTexture() { return _Texture; }
-	int32 GetEquip() { return _Equip; }
+	int GetCode() { return ItemData._Code; }
+	FString GetName() { return ItemData._Name; }
+	ItemType GetType() { return ItemData._Type; }
+	StatType GetModStat() { return ItemData._ModTarget; }
+	FString GetDesc() { return ItemData._Description; }
+	int32 GetPrice() { return ItemData._Price; }
+	int32 GetValue() { return ItemData._Value; }
+	UStaticMesh* GetSkeletalMesh() { return ItemData._Mesh; }
+	UTexture2D* GetTexture() { return ItemData._Texture; }
+	int32 GetEquip() { return ItemData._Equip; }
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
@@ -107,14 +108,6 @@ protected:
 	UPROPERTY()
 	class AMyPlayer *_player;
 
-	int _Code;
-	FString _Name;
-	ItemType _Type;
-	StatType _ModStatType;
-	FString _Description;
-	int32 _Price;
-	int32 _Value;
-	UStaticMesh *_Mesh;
-	UTexture2D *_Texture;
-	int _Equip;
+    UPROPERTY()
+    FItemData ItemData;
 };

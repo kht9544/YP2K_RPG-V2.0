@@ -77,6 +77,7 @@ public:
 private:
 	bool InventoryMutual(UI_LIST invenUI);
 	bool InterectMutual(UI_LIST interectUI);
+	bool ShouldCountUI(UI_LIST ui);
 
 	UPROPERTY()
 	TArray<UUserWidget *> _uiList;

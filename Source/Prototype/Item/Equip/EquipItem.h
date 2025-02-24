@@ -28,7 +28,7 @@ public:
 
     virtual void SetItemWithCode(int32 itemCode) override;
 
-    ItemType GetArmorType() { return _Type; }
+    ItemType GetArmorType() { return ItemData._Type; }
     EItemType GetEquipType() { return _equipItemType; }
     void SetEquipType(int num);
 

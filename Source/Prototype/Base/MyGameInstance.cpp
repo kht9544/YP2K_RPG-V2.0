@@ -4,6 +4,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Component/StatComponent.h"
 #include "Component/InventoryComponent.h"
+#include "PlayerStatData.h"
 #include "Player/MyPlayer.h"
 #include "Item/BaseItem.h"
 #include "Item/Equip/EquipItem.h"
@@ -91,41 +92,71 @@ UMyGameInstance::UMyGameInstance()
 
 void UMyGameInstance::SavePlayerStats(class UStatComponent *StatComponent)
 {
-	if (StatComponent)
+	if (StatComponent && SavedPlayerStats)
 	{
-		SavedPlayerStats.Level = StatComponent->GetLevel();
-		SavedPlayerStats.MaxHp = StatComponent->GetMaxHp();
-		SavedPlayerStats.CurHp = StatComponent->GetCurHp();
-		SavedPlayerStats.MaxMp = StatComponent->GetMaxMp();
-		SavedPlayerStats.CurMp = StatComponent->GetCurMp();
-		SavedPlayerStats.Str = StatComponent->GetStr();
-		SavedPlayerStats.Dex = StatComponent->GetDex();
-		SavedPlayerStats.Int = StatComponent->GetInt();
-		SavedPlayerStats.Exp = StatComponent->GetExp();
-		SavedPlayerStats.NextExp = StatComponent->GetNextExp();
-		SavedPlayerStats.BonusPoint = StatComponent->GetBonusPoint();
-		SavedPlayerStats.AttackRadius = StatComponent->GetAttackRadius();
-		SavedPlayerStats.AttackRange = StatComponent->GetAttackRadius();
+		SavedPlayerStats->Level = StatComponent->GetLevel();
+		SavedPlayerStats->MaxHp = StatComponent->GetMaxHp();
+		SavedPlayerStats->CurHp = StatComponent->GetCurHp();
+		SavedPlayerStats->MaxMp = StatComponent->GetMaxMp();
+		SavedPlayerStats->CurMp = StatComponent->GetCurMp();
+		SavedPlayerStats->Str = StatComponent->GetStr();
+		SavedPlayerStats->Dex = StatComponent->GetDex();
+		SavedPlayerStats->Int = StatComponent->GetInt();
+		SavedPlayerStats->Exp = StatComponent->GetExp();
+		SavedPlayerStats->NextExp = StatComponent->GetNextExp();
+		SavedPlayerStats->BonusPoint = StatComponent->GetBonusPoint();
+		SavedPlayerStats->AttackRadius = StatComponent->GetAttackRadius();
+		SavedPlayerStats->AttackRange = StatComponent->GetAttackRange();
+
+		  	UE_LOG(LogTemp, Warning, TEXT("save: level: %d, hhP: %d, HP: %d, mMP: %d, MP: %d, sgtr: %d, d: %d, i: %d, e: %d, e: %d, b: %d, r: %f, r: %f"),
+            SavedPlayerStats->Level,
+            SavedPlayerStats->MaxHp,
+            SavedPlayerStats->CurHp,
+            SavedPlayerStats->MaxMp,
+            SavedPlayerStats->CurMp,
+            SavedPlayerStats->Str,
+            SavedPlayerStats->Dex,
+            SavedPlayerStats->Int,
+            SavedPlayerStats->Exp,
+            SavedPlayerStats->NextExp,
+            SavedPlayerStats->BonusPoint,
+            SavedPlayerStats->AttackRange,
+            SavedPlayerStats->AttackRadius);
 	}
 }
 
 void UMyGameInstance::LoadPlayerStats(class UStatComponent *StatComponent)
 {
-	if (StatComponent)
+	if (StatComponent && SavedPlayerStats)
 	{
-		StatComponent->SetLevel(SavedPlayerStats.Level);
-		StatComponent->SetMaxHp(SavedPlayerStats.MaxHp);
-		StatComponent->SetHp(SavedPlayerStats.CurHp);
-		StatComponent->SetMaxMp(SavedPlayerStats.MaxMp);
-		StatComponent->SetMp(SavedPlayerStats.CurMp);
-		StatComponent->SetStr(SavedPlayerStats.Str);
-		StatComponent->SetDex(SavedPlayerStats.Dex);
-		StatComponent->SetInt(SavedPlayerStats.Int);
-		StatComponent->SetExp(SavedPlayerStats.Exp);
-		StatComponent->SetNextExp(SavedPlayerStats.NextExp);
-		StatComponent->SetBonusPoint(SavedPlayerStats.BonusPoint);
-		StatComponent->SetAttackRange(SavedPlayerStats.AttackRange);
-		StatComponent->SetAttackRadius(SavedPlayerStats.AttackRadius);
+		StatComponent->SetLevel(SavedPlayerStats->Level);
+		StatComponent->SetMaxHp(SavedPlayerStats->MaxHp);
+		StatComponent->SetHp(SavedPlayerStats->CurHp);
+		StatComponent->SetMaxMp(SavedPlayerStats->MaxMp);
+		StatComponent->SetMp(SavedPlayerStats->CurMp);
+		StatComponent->SetStr(SavedPlayerStats->Str);
+		StatComponent->SetDex(SavedPlayerStats->Dex);
+		StatComponent->SetInt(SavedPlayerStats->Int);
+		StatComponent->SetExp(SavedPlayerStats->Exp);
+		StatComponent->SetNextExp(SavedPlayerStats->NextExp);
+		StatComponent->SetBonusPoint(SavedPlayerStats->BonusPoint);
+		StatComponent->SetAttackRange(SavedPlayerStats->AttackRange);
+		StatComponent->SetAttackRadius(SavedPlayerStats->AttackRadius);
+
+		  UE_LOG(LogTemp, Warning, TEXT("load: level: %d, hhP: %d, HP: %d, mMP: %d, MP: %d, sgtr: %d, d: %d, i: %d, e: %d, e: %d, b: %d, r: %f, r: %f"),
+            SavedPlayerStats->Level,
+            SavedPlayerStats->MaxHp,
+            SavedPlayerStats->CurHp,
+            SavedPlayerStats->MaxMp,
+            SavedPlayerStats->CurMp,
+            SavedPlayerStats->Str,
+            SavedPlayerStats->Dex,
+            SavedPlayerStats->Int,
+            SavedPlayerStats->Exp,
+            SavedPlayerStats->NextExp,
+            SavedPlayerStats->BonusPoint,
+            SavedPlayerStats->AttackRange,
+            SavedPlayerStats->AttackRadius);
 
 		StatComponent->UpdateUI();
 	}
@@ -165,7 +196,7 @@ void UMyGameInstance::SaveInventory(class UInventoryComponent *InventoryComponen
             }
         }
 
-        SavedPlayerStats.Money = InventoryComponent->GetMoney();
+       // SavedPlayerStats->Money = InventoryComponent->GetMoney();
     }
 }
 
@@ -211,7 +242,7 @@ void UMyGameInstance::LoadInventory(class UInventoryComponent *InventoryComponen
                 }
             }
         }
-        InventoryComponent->AddMoney(SavedPlayerStats.Money);
+        //InventoryComponent->AddMoney(SavedPlayerStats->Money);
     }
 }
 
@@ -256,6 +287,10 @@ void UMyGameInstance::Init()
 	Super::Init();
 
 	InitializeManagers();
+	if (!SavedPlayerStats)
+    {
+        SavedPlayerStats = NewObject<UPlayerStatData>(this, UPlayerStatData::StaticClass());
+    }
 }
 
 void UMyGameInstance::InitializeManagers()
