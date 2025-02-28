@@ -272,7 +272,6 @@ void ANormalGameModeBase::InitializeMonsterPool()
 }
 
 // 몬스터 스폰시 아직 활성화 되지 않은 몬스터 활성화
-if (_monsterPool.Num() == 0) return;
 for (int i = 0; i < size; ++i)
 {
 	ANormalMonster* AvailableMonster = nullptr;
