@@ -33,7 +33,7 @@
  │   ├── UStatComponent (스탯 관리)
  │   ├── UInventoryComponent (인벤토리 관리)
  │   ├── UShopComponent (상점 관리)
- ├── ABaseItem (베이스 아이템 클래스)
+ ├── ABaseItem (아이템 베이스 클래스)
  │   ├── AEquipItem (장비 아이템 클래스)
  |   │   ├── Helmet (투구)
  |   │   ├── ShoulderArmor (어꺠)
@@ -53,11 +53,11 @@
 ## 🔥 맡은 역할
 
 ### Player 및 Monster 구현
-- **Skill,Stat** 구현
+- **Skill,Stat UI 및 기능** 구현
 - **장비 및 소비 Item** 구현
 - **전투 시스템(가드,회피,몬스터처리시 경험치 및 아이템 획득)** 개발
-- **체력 와 마나 및 경험치 UI** 연동
-- **몬스터 AI 구현** 전투 패턴 적용
+- **체력 와 마나 및 경험치 UI** 
+- **몬스터 AI(Behavior Tree) 구현** 전투 패턴 적용
 - **AnimInstance 제작**
 - 팀원이 제작한 UI와 연동확인 및 수정
 
@@ -71,8 +71,6 @@
 - **주변 사물과 상호작용을 이용한 기믹**
 - **Behavior Tree 설계 및 AI 패턴 적용**</br>
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/86d00f94-024d-475b-96bd-c79c1c9d002f" /> </br>
-
-
 
 ### Component 및 Manager 시스템 개발
 - ** Sound 및 Effect 및 UI Manager로 관리**
@@ -132,8 +130,6 @@ void AMyPlayer::PostInitializeComponents()
 }
 
 ```
-
-
 ## ⚠️ 오류 상황과 해결 방안
 
 ###  GC오류  
@@ -141,7 +137,7 @@ void AMyPlayer::PostInitializeComponents()
 > 잘못된 객체 참조및 알맞지 않은 UPROPERTY() 사용(맵 이동시 Item이 제대로 초기화 되지 않음)
 
 ✅ **해결 방법**  
-> Crash Report 및 Log을 이용해 초기화 안된 객체 확인 후 Destroy()및 reset() 확인과 UPROPERTY() 확인 및 언리얼 gc공부(refcount, mark and sweep)
+> Crash Report 및 Log을 이용해 초기화 안된 객체 확인 후 Destroy()및 reset() 확인과 UPROPERTY() 확인 및 GC공부(refcount, mark and sweep)
 
 ------------------------------------------------------------------------------------------------------------------</br>
 
@@ -149,13 +145,16 @@ void AMyPlayer::PostInitializeComponents()
 🔍 **원인**</br>
 > 아이템과 인벤토리 컵포넌트와 UI담당 팀원과 충분한 소통을 하지 않아 오류 발생
 > Texture과 Type을 서로 다르게 사용하고 있었음
-> 그리고 서로 UI를 따로 따로 관리해 UI끼리 충돌 오류 
+> 서로 UI를 따로 따로 관리해 UI끼리 충돌 오류 
 
 ✅ **해결 방법**  
 > 회의를 통해 문제 발견 및 해결 
 > Item을 하드코딩해 구성하지않고 DataTable을 이용해 Code로 관리 및 사용
 > UIManger을 통한 UI 정리
 ```
+//Item DataTable
+IMG
+
 //해결 코드(item)
 void ABaseItem::SetItemWithCode(int32 itemCode)
 {
