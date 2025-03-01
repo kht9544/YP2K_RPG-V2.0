@@ -151,10 +151,9 @@ void AMyPlayer::PostInitializeComponents()
 > 회의를 통해 문제 발견 및 해결 
 > Item을 하드코딩해 구성하지않고 DataTable을 이용해 Code로 관리 및 사용
 > UIManger을 통한 UI 정리
-```
-//Item DataTable
-IMG
+<img width="1420" alt="Image" src="https://github.com/user-attachments/assets/115ff265-d3b5-482d-95b0-10ae43a444c5" />
 
+```
 //해결 코드(item)
 void ABaseItem::SetItemWithCode(int32 itemCode)
 {
