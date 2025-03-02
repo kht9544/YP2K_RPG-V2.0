@@ -1,6 +1,7 @@
 # YPK_RPG V2.0 </br>
 - 유튜브링크 : https://youtu.be/NWj8hIFVd30</br>
-- 패키징파일 : https://drive.google.com/drive/folders/1R1YOr0E5lGBl__Li2Lf_HMDNkwYBS-YR?usp=sharing</br>
+- 패키징파일(Windows) : https://drive.google.com/drive/folders/1R1YOr0E5lGBl__Li2Lf_HMDNkwYBS-YR?usp=sharing</br>
+- 패키징파일(Mac) : https://drive.google.com/drive/folders/18GrNxqSM3LWHmCPVZRnw6-RRE5BSR6jL</br>
 
 ## 📝 개요
 본 프로젝트는 7주 동안 **TEAM_YP2K**에서 개발한 언리얼 엔진 기반으로 만든 다양한 스테이지와 다양한 몬스터를 사냥하며 성장하는 던전형 RPG게임입니다.🎮 
