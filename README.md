@@ -167,8 +167,6 @@ void ABaseItem::SetItemWithCode(int32 itemCode)
 		}
 
 		ItemData = *data;
-
-		_meshComponent->SetStaticMesh(ItemData._Mesh);
 	}
 }
 
