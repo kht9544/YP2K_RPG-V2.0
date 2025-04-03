@@ -3,7 +3,6 @@ import pymysql
 
 app = Flask(__name__)
 
-# ✅ MySQL 연결 설정
 def get_conn():
     return pymysql.connect(
         host='localhost',
@@ -14,8 +13,6 @@ def get_conn():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-
-# ✅ 로그인 또는 회원가입
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -39,7 +36,6 @@ def login():
         return jsonify({'success': True, 'message': '회원가입 완료', 'username': username, 'first_in': True, 'is_new': True})
 
 
-# ✅ 스탯 저장
 @app.route('/save_stats', methods=['POST'])
 def save_stats():
     data = request.get_json()
@@ -76,8 +72,6 @@ def save_stats():
     conn.close()
     return jsonify({'success': True})
 
-
-# ✅ 스탯 불러오기
 @app.route('/load_stats', methods=['GET'])
 def load_stats():
     username = request.args.get('username')
@@ -94,7 +88,6 @@ def load_stats():
     return jsonify(row)
 
 
-# ✅ 인벤토리 저장
 @app.route('/save_inventory', methods=['POST'])
 def save_inventory():
     data = request.get_json()
@@ -108,13 +101,11 @@ def save_inventory():
     conn = get_conn()
     cursor = conn.cursor()
 
-    # 기존 아이템 삭제
     cursor.execute('DELETE FROM inventory WHERE username = %s', (username,))
 
-    # 인벤토리 아이템 저장
     for item in inventory_list:
         if not item.get('code') or item.get('code') == 0:
-            continue  # 유효하지 않은 아이템은 건너뜀
+            continue 
 
         cursor.execute('''
             INSERT INTO inventory (username, item_code, name, type, modTarget, description, price, value, equip)
@@ -128,10 +119,9 @@ def save_inventory():
             item.get('description'),
             item.get('price'),
             item.get('value'),
-            0  # 인벤토리는 equip 슬롯 없음
+            0 
         ))
 
-    # 장착 아이템 저장 (code가 0이 아닌 것만)
     equip_slot_map = {
         "UpperArmor": 1,
         "LowerArmor": 2,
@@ -142,7 +132,7 @@ def save_inventory():
 
     for slot, item in equip_dict.items():
         if not item.get('code') or item.get('code') == 0:
-            continue  # 장착된 아이템이 아니면 저장하지 않음
+            continue 
 
         equip_slot = equip_slot_map.get(slot, 0)
         cursor.execute('''
@@ -199,12 +189,10 @@ def load_inventory():
             'equip': row['equip']
         }
 
-        # equip 필드가 장착 슬롯이면 equip dict에 넣음
         if item['equip'] in slot_names:
             slot = slot_names[item['equip']]
             equip[slot] = item
         else:
-            # 그 외는 무조건 inventory로
             inventory.append(item)
 
     money = 1000  # 예시 값
@@ -217,7 +205,6 @@ def load_inventory():
     })
 
 
-# ✅ 스켈레탈 메시 저장
 @app.route('/save_skeletal', methods=['POST'])
 def save_skeletal():
     data = request.get_json()
@@ -245,13 +232,11 @@ def save_skeletal():
     conn.close()
     return jsonify({'success': True})
 
-
-# ✅ 스켈레탈 메시 불러오기
 @app.route('/load_skeletal', methods=['GET'])
 def load_skeletal():
     username = request.args.get('username')
     conn = get_conn()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)  # DictCursor 사용
+    cursor = conn.cursor(pymysql.cursors.DictCursor) 
 
     cursor.execute('SELECT * FROM skeletal_data WHERE username = %s', (username,))
     row = cursor.fetchone()
@@ -269,7 +254,5 @@ def load_skeletal():
     conn.close()
     return jsonify({"skeletal": skeletal})
 
-
-# ✅ 서버 실행
 if __name__ == '__main__':
     app.run(debug=True)
