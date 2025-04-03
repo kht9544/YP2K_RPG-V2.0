@@ -9,10 +9,19 @@
 #include "Component/StatComponent.h"
 #include "Component/InventoryComponent.h"
 #include "../Item/BaseItem.h"
-#include "PlayerStatData.h" 
 #include "Item/Equip/EquipItem.h"
 #include "../Component/ShopComponent.h"
+
+#include "HttpModule.h"
+#include "Interfaces/IHttpRequest.h"
+#include "Interfaces/IHttpResponse.h"
+#include "Http.h"
+#include "Dom/JsonObject.h"
+#include "Serialization/JsonWriter.h"
+#include "Serialization/JsonSerializer.h"
+
 #include "MyGameInstance.generated.h"
+
 
 #define GAMEINSTANCE Cast<UMyGameInstance>(GetWorld()->GetGameInstance())
 #define UIManager Cast<UMyGameInstance>(GetWorld()->GetGameInstance())->GetUIManager()
@@ -20,6 +29,20 @@
 #define SoundManager Cast<UMyGameInstance>(GetGameInstance())->GetSoundManager()
 #define EffectManager Cast<UMyGameInstance>(GetGameInstance())->GetEffectManager()
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLoginSuccessDelegate);
+
+USTRUCT()
+struct FPlayerStatsStruct
+{
+	GENERATED_BODY()
+	int32 Level, MaxHp, CurHp;
+	int32 MaxMp, CurMp;
+	int32 Str;
+	int32 Dex;
+	int32 Int;
+	int32 Exp, NextExp, BonusPoint, Money;
+	float AttackRadius, AttackRange;
+};
 
 UCLASS()
 class PROTOTYPE_API UMyGameInstance : public UGameInstance
@@ -28,7 +51,6 @@ class PROTOTYPE_API UMyGameInstance : public UGameInstance
 
 public:
 	UMyGameInstance();
-
 	void SavePlayerStats(class UStatComponent *StatComponent);
 	void LoadPlayerStats(class UStatComponent *StatComponent);
 
@@ -38,16 +60,19 @@ public:
 	void SavePlayerSkeletal(class AMyPlayer *player);
 	void LoadPlayerSkeletal(class AMyPlayer *player);
 
-	void SavePlayer(class AMyPlayer *player);
-
-	TArray<int32> SavedInventoryCodes; 
-	TMap<FString, int32> SavedEquipCodes;	
-
 	UPROPERTY()
 	TArray<FItemData> SavedInventoryData;
 
 	UPROPERTY()
 	TMap<FString, FItemData> SavedEquipData;
+
+	UPROPERTY(BlueprintAssignable, Category = "Login")
+    FOnLoginSuccessDelegate OnLoginSuccess;
+
+	UFUNCTION(BlueprintCallable, Category = "Login")
+	void Login(FString Username, FString Password);
+
+	void OnLoginResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 
 	bool GetFirst() { return _firstIn; }
 	void SetFirst(bool first) { _firstIn = first; }
@@ -60,7 +85,6 @@ public:
 
 	TArray<ABaseItem *> GetInvenItemList();
 
-public:
 	virtual void Init() override;
 
 	UFUNCTION()
@@ -98,9 +122,6 @@ private:
 	AEffectManager *_effectManager;
 
 	UPROPERTY()
-	UPlayerStatData* SavedPlayerStats;
-
-	UPROPERTY()
 	UDataTable *_statTable;
 
 	UPROPERTY()
@@ -114,7 +135,6 @@ private:
 
 	UPROPERTY()
 	UDataTable *_ConsItemTable;
-	
 	UPROPERTY()
 	UDataTable *_EquipItemTable;
 
@@ -126,6 +146,9 @@ private:
 
 	UPROPERTY()
 	UDataTable *_DragonStatTable;
+
+	UPROPERTY()
+	FPlayerStatsStruct SavedPlayerStats;
 
 	UPROPERTY()
 	TArray<class USkeletalMesh *> SavedSkeletalMeshes;
@@ -144,4 +167,7 @@ private:
 
 	UPROPERTY()
 	bool _stage2Clear = false;
+
+	UPROPERTY()
+	FString CurrentUsername;
 };

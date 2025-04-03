@@ -2,6 +2,12 @@
 
 
 #include "Monster/AI/AIController_Boss2.h"
+#include "NavigationSystem.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardData.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 
 AAIController_Boss2::AAIController_Boss2()
 {
@@ -16,3 +22,21 @@ AAIController_Boss2::AAIController_Boss2()
 	}
 }
 
+void AAIController_Boss2::OnPossess(APawn* InPawn)
+{
+    Super::OnPossess(InPawn);
+
+    UBlackboardComponent *blackboardComponent = Blackboard;
+    if (UseBlackboard(_bb, blackboardComponent))
+    {
+        if (RunBehaviorTree(_bt))
+        {
+            blackboardComponent->SetValueAsVector(FName(TEXT("FixedPos")),InPawn->GetActorLocation());
+        }
+    }
+}
+
+void AAIController_Boss2::OnUnPossess()
+{
+    Super::OnUnPossess();
+}

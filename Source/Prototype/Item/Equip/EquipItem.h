@@ -14,7 +14,8 @@ enum class EItemType : uint8
     LowerArmor,
     ShoulderArmor,
     Sword,
-    Shield
+    Shield,
+    END
 };
 
 UCLASS()
@@ -28,7 +29,7 @@ public:
 
     virtual void SetItemWithCode(int32 itemCode) override;
 
-    ItemType GetArmorType() { return ItemData._Type; }
+    ItemType GetArmorType() { return _Type; }
     EItemType GetEquipType() { return _equipItemType; }
     void SetEquipType(int num);
 

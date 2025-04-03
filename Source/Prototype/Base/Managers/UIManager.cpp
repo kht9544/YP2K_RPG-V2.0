@@ -10,6 +10,7 @@
 #include "UI/MainStartWidget.h"
 #include "UI/SkillWidget.h"
 #include "UI/PlayerBarWidget.h"
+#include "UI/LoginWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "TriggerBox_StageSequnce/StageSequence_Trigger.h"
@@ -97,7 +98,14 @@ AUIManager::AUIManager()
 		_playerBarUI = CreateWidget<UPlayerBarWidget>(GetWorld(), PlBar.Class);
 	}
 
-	_uiList = {_inventoryUI, _statUI, _bossUI, _boss2UI, _shopUI, _startUI, _loadUI, _options, _skillUI, _playerBarUI};
+	static ConstructorHelpers::FClassFinder<ULoginWidget> LW(
+		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/UI/Login_UI.Login_UI_C'"));
+	if(LW.Succeeded())
+	{
+		_loginUI = CreateWidget<ULoginWidget>(GetWorld(), LW.Class);
+	}
+
+	_uiList = {_inventoryUI, _statUI, _bossUI, _boss2UI, _shopUI, _startUI, _loadUI, _options, _skillUI, _playerBarUI, _loginUI};
 	_uiIsOpen.Init(false, _uiList.Num());
 	_isPauseWhenOpen.Init(true, _uiList.Num());
 }
@@ -126,7 +134,7 @@ void AUIManager::OpenUI(UI_LIST ui)
 	if (_isPauseWhenOpen[UIindex])
 		pauseGame.Broadcast();
 
-	if (ShouldCountUI(ui))
+	if (ui == UI_LIST::Inventory || ui == UI_LIST::Shop || ui == UI_LIST::Options || ui == UI_LIST::Stat)
 	{
 		cnt++;
 	}
@@ -138,6 +146,12 @@ void AUIManager::OpenUI(UI_LIST ui)
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeGameAndUI().SetHideCursorDuringCapture(false));
 	}
+
+	_uiList[UIindex]->SetVisibility(ESlateVisibility::Visible);
+	static int32 LastZOrder = 0;
+	LastZOrder++;
+	_uiList[UIindex]->AddToViewport(LastZOrder);
+
 	_uiIsOpen[UIindex] = true;
 }
 
@@ -232,12 +246,4 @@ bool AUIManager::InterectMutual(UI_LIST interectUI)
 	if (_uiIsOpen[(int32)UI_LIST::Inventory])
 		return true;
 	return false;
-}
-
-bool AUIManager::ShouldCountUI(UI_LIST ui)
-{
-	 return ui == UI_LIST::Inventory ||
-           ui == UI_LIST::Shop ||
-           ui == UI_LIST::Options ||
-           ui == UI_LIST::Stat;
 }

@@ -13,7 +13,7 @@ AEquipItem::AEquipItem()
 {
     PrimaryActorTick.bCanEverTick = true;
 
-    ItemData._Type = ItemType::Equipment;
+    _Type = ItemType::Equipment;
 
     _trigger->SetSphereRadius(100.0f);
     _trigger->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
@@ -30,11 +30,19 @@ void AEquipItem::SetItemWithCode(int32 itemCode)
             return;
         }
 
-         ItemData = *data;    
+        _Code = data->_Code;
+        _Texture = data->_Texture;
+        _Mesh = data->_Mesh;
+        _equipItem = data->_Skeletal;
+        _Value = data->_Value;
+        _Price = data->_Price;
+        _Name = data->_Name;
+        _Type = data->_Type;
+        _ModStatType = data->_ModTarget;
+        _Description = data->_Description;
+        _Equip = data->_Equip;
 
-        _equipItem = ItemData._Skeletal;
-
-        _meshComponent->SetStaticMesh(ItemData._Mesh);
+        _meshComponent->SetStaticMesh(_Mesh);
     }
 }
 
